@@ -1,0 +1,5 @@
+>python day2.py 
+282
+
+https://adventofcode.com/2024/day/2/answer
+That's the right answer! You are one gold star closer to finding the Chief Historian.

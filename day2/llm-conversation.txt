@@ -1,0 +1,272 @@
+Create code for the following problem. Read the input from file input.txt in the same directory as the code
+"""
+<paste text from https://adventofcode.com/2024/day/2>
+"""
+
+Alright, I have this problem to solve. Let me read it carefully and understand what's being asked.
+
+So, I have a file called "input.txt" that contains multiple lines, each representing a report. Each report is a
+list of numbers separated by spaces. These numbers are called levels.
+
+I need to determine how many of these reports are "safe" based on two conditions:
+
+1. All the levels in the report are either entirely increasing or entirely decreasing.
+
+2. Any two adjacent levels differ by at least one and at most three.
+
+The example given is:
+
+7 6 4 2 1 → Safe
+
+1 2 7 8 9 → Unsafe (increase of 5)
+
+9 7 6 2 1 → Unsafe (decrease of 4)
+
+1 3 2 4 5 → Unsafe (increases and then decreases)
+
+8 6 4 4 1 → Unsafe (two 4's, no change)
+
+1 3 6 7 9 → Safe
+
+From this, we see that only two reports are safe.
+
+Alright, so my task is to read the file, process each line as a report, check these two conditions for each
+report, and count how many reports are safe.
+
+First, I need to read the file "input.txt". I should make sure that the file is in the same directory as my code.
+
+In Python, I can open the file using the `open` function and read its lines.
+
+So, something like:
+
+with open('input.txt', 'r') as f:
+
+lines = f.readlines()
+
+Now, each line in(lines) will be a string. I need to split each line by spaces to get the levels as integers.
+
+So, for each line, I can do:
+
+report = list(map(int, line.strip().split()))
+
+This will give me a list of integers for each report.
+
+Next, for each report, I need to check two conditions:
+
+a) All levels are either entirely increasing or entirely decreasing.
+
+b) Any two adjacent levels differ by at least one and at most three.
+
+Moreover, the levels must be all increasing or all decreasing. Mixed trends are not allowed.
+
+Let me think about how to implement this.
+
+First, for a report to be safe, it must be entirely increasing or entirely decreasing.
+
+So, I need to check the trend between each pair of adjacent levels.
+
+I can iterate through the report and check the difference between each pair of adjacent levels.
+
+If all differences are positive and between 1 and 3, it's increasing safely.
+
+If all differences are negative and between -3 and -1, it's decreasing safely.
+
+If any difference is zero or outside the range of -3 to 3 (excluding zero), it's unsafe.
+
+Also, if the report has mixed increases and decreases, it's unsafe.
+
+So, I need to check for consistency in the trend.
+
+Let me think about how to implement this.
+
+One way is:
+
+- Check the difference between the first two levels to determine if it's increasing or decreasing.
+
+- Then, ensure that all subsequent differences match that trend and are within -3 to -1 or 1 to 3.
+
+But I need to handle the case where the report has only one level. In that case, it should be considered safe, I
+think, because there are no adjacent levels to compare.
+
+Wait, but in the example, each report has at least two levels. Let's check.
+
+Looking back at the example, the smallest report has five levels. So, perhaps all reports have at least two
+levels.
+
+But to be safe, I should consider the possibility of a single-level report.
+
+In that case, since there are no adjacent levels, maybe it's considered safe.
+
+But to keep it simple, I'll assume that all reports have at least two levels, as per the example.
+
+So, for each report:
+
+- Get the differences between consecutive levels.
+
+- Check if all differences are positive and within 1 to 3, or all are negative and within -3 to -1.
+
+- If so, it's safe; else, it's unsafe.
+
+Let me think about how to implement this in code.
+
+I can write a function that takes a report (a list of integers) and returns True if it's safe, else False.
+
+Something like:
+
+def is_safe(report):
+
+if len(report) < 2:
+
+return True  # or maybe False, depending on rules
+
+differences = [report[i+1] - report[i] for i in range(len(report)-1)]
+
+# Check if all differences are within 1 to 3 or -3 to -1
+
+if all(1 <= d <= 3 for d in differences):
+
+return True
+
+elif all(-3 <= d <= -1 for d in differences):
+
+return True
+
+else:
+
+return False
+
+Then, I can iterate through all reports, count how many return True from this function.
+
+But let's test this function with the example reports.
+
+Report 1: 7 6 4 2 1
+
+Differences: -1, -2, -2, -1
+
+All differences are between -3 and -1 → Safe
+
+Report 2: 1 2 7 8 9
+
+Differences: +1, +5, +1, +1
+
+Not all differences are within 1 to 3 → Unsafe
+
+Report 3: 9 7 6 2 1
+
+Differences: -2, -1, -4, -1
+
+Not all differences are within -3 to -1 because of -4 → Unsafe
+
+Report 4: 1 3 2 4 5
+
+Differences: +2, -1, +2, +1
+
+Mixed increases and decreases → Unsafe
+
+Report 5: 8 6 4 4 1
+
+Differences: -2, -2, 0, -3
+
+Not all differences are within -3 to -1 because of 0 → Unsafe
+
+Report 6: 1 3 6 7 9
+
+Differences: +2, +3, +1, +2
+
+All differences within 1 to 3 → Safe
+
+So, my function correctly identifies reports 1 and 6 as safe, and the others as unsafe.
+
+Great, seems good.
+
+Now, I need to read the input file, process each line as a report, and count how many are safe.
+
+I should also make sure to handle any potential errors, like non-integer values in the reports.
+
+But for simplicity, I'll assume that the input file is correctly formatted, as per the problem statement.
+
+So, my plan is:
+
+- Read the input file, split into lines.
+
+- For each line, split by spaces and convert to integers to form a report.
+
+- Use the is_safe function to check if the report is safe.
+
+- Keep a counter to count how many reports are safe.
+
+- Finally, print the count.
+
+Let me write the code accordingly.
+
+## Final Solution
+To solve this problem, we need to determine how many reports from the engineers are considered safe based on
+specific criteria related to sequences of numbers referred to as "levels." A report is deemed safe if the
+differences between consecutive levels are consistently increasing or decreasing within certain bounds.
+
+### Approach
+
+1. **Reading Input:** We read the input data from a file named `input.txt`, assuming each line contains a report
+consisting of integers separated by spaces.
+2. **Checking Safety of a Report:**
+   - Calculate the differences between consecutive levels.
+   - Verify if all differences are positive (increasing sequence) and within 1 to 3, or negative (decreasing
+sequence) and within -3 to -1.
+   - If all differences meet one of these conditions consistently, the report is safe.
+3. **Counting Safe Reports:** Iterate through all reports and count how many satisfy the safety criteria.
+
+### Solution Code
+
+```python
+def is_safe(report):
+    if len(report) < 2:
+        return True  # Assuming single-level reports are safe
+
+    differences = [report[i+1] - report[i] for i in range(len(report)-1)]
+
+    if all(1 <= d <= 3 for d in differences):
+        return True
+    elif all(-3 <= d <= -1 for d in differences):
+        return True
+    else:
+        return False
+
+def count_safe_reports(filename):
+    with open(filename, 'r') as file:
+        lines = file.readlines()
+
+    safe_count = 0
+    for line in lines:
+        report = list(map(int, line.split()))
+        if is_safe(report):
+            safe_count += 1
+
+    return safe_count
+
+# Example usage
+if __name__ == "__main__":
+    filename = "input.txt"
+    print(count_safe_reports(filename))
+```
+
+### Explanation
+
+1. **is_safe Function:**
+   - This function checks if a given report (list of integers) is safe.
+   - It calculates the differences between consecutive levels.
+   - It then checks if all differences are within the range 1 to 3 (increasing safely) or -3 to -1 (decreasing
+safely).
+   - If all differences fall within one of these ranges consistently, the function returns `True`; otherwise, it
+returns `False`.
+
+2. **count_safe_reports Function:**
+   - This function reads reports from a file, processes each report to determine if it is safe using the `is_safe`
+function.
+   - It counts and returns the number of safe reports.
+
+3. **Main Block:**
+   - The script is designed to be run directly, reading reports from `input.txt` and printing the count of safe
+reports.
+
+This approach ensures that we accurately identify and count the number of safe reports based on the defined
+criteria.
