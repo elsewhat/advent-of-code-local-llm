@@ -1,0 +1,5 @@
+>cat input.txt | python day1.py 1
+1506483
+
+https://adventofcode.com/2024/day/1/answer
+That's the right answer! You are one gold star closer to finding the Chief Historian. [Continue to Part Two]
